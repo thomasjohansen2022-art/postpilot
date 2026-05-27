@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PostPilot — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #08080F;
+    --surface: #0F0F1A;
+    --surface2: #16162A;
+    --border: #1E1E3A;
+    --purple: #7C3AED;
+    --purple-light: #9D5CF5;
+    --purple-dim: rgba(124,58,237,0.15);
+    --text: #F0F0FF;
+    --text-muted: #8080A0;
+    --green: #22C55E;
+    --red: #EF4444;
+    --radius: 12px;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* Header */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--purple), #4F46E5);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  #userEmail {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  .btn-sm {
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    transition: all 0.2s;
+  }
+  .btn-sm:hover { border-color: var(--purple); color: var(--purple-light); }
+  .btn-sm.danger:hover { border-color: var(--red); color: var(--red); }
+
+  /* Layout */
+  .main-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  @media (max-width: 820px) {
+    .main-wrap { grid-template-columns: 1fr; }
+  }
+
+  /* Panel */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+  .panel-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel-title span { font-size: 18px; }
+
+  /* Form */
+  .form-group { margin-bottom: 16px; }
+  label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+  input[type="text"], select, textarea {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input[type="text"]:focus, select:focus, textarea:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px var(--purple-dim);
+  }
+  select option { background: var(--surface2); color: var(--text); }
+  textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+
+  /* Platform pills */
+  .platform-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .platform-pill {
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .platform-pill.active {
+    border-color: var(--purple);
+    background: var(--purple-dim);
+    color: var(--purple-light);
+  }
+
+  /* Count toggle */
+  .count-group { display: flex; gap: 8px; }
+  .count-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .count-btn.active {
+    border-color: var(--purple);
+    background: var(--purple-dim);
+    color: var(--purple-light);
+  }
+
+  /* Generate button */
+  .btn-generate {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, var(--purple), #4F46E5);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-generate:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(124,58,237,0.4); }
+  .btn-generate:active { transform: translateY(0); }
+  .btn-generate:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  /* Results panel */
+  .results-empty {
+    text-align: center;
+    padding: 60px 24px;
+    color: var(--text-muted);
+  }
+  .results-empty .icon { font-size: 48px; margin-bottom: 12px; }
+  .results-empty p { font-size: 0.9rem; line-height: 1.6; }
+
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .results-count {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+  .btn-copy-all {
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--purple);
+    background: var(--purple-dim);
+    color: var(--purple-light);
+    transition: all 0.2s;
+  }
+  .btn-copy-all:hover { background: rgba(124,58,237,0.25); }
+
+  /* Post cards */
+  .posts-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  .posts-grid::-webkit-scrollbar { width: 4px; }
+  .posts-grid::-webkit-scrollbar-track { background: var(--surface2); border-radius: 4px; }
+  .posts-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .post-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    transition: border-color 0.2s;
+    position: relative;
+  }
+  .post-card:hover { border-color: var(--purple); }
+  .post-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .post-num {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .post-platform-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: var(--purple-dim);
+    color: var(--purple-light);
+    border: 1px solid rgba(124,58,237,0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .post-text {
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .post-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 12px;
+    gap: 8px;
+  }
+  .btn-copy {
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    transition: all 0.2s;
+  }
+  .btn-copy:hover { border-color: var(--green); color: var(--green); }
+  .btn-copy.copied { border-color: var(--green); color: var(--green); background: rgba(34,197,94,0.1); }
+
+  /* Loading spinner */
+  .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Loading skeleton */
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .skeleton-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  .skeleton-line {
+    height: 12px;
+    border-radius: 6px;
+    background: var(--border);
+    margin-bottom: 8px;
+  }
+  .skeleton-line:last-child { width: 60%; margin-bottom: 0; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--surface);
+    border: 1px solid var(--green);
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 1000;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* Usage bar */
+  .usage-bar-wrap {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .usage-label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .usage-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .usage-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--purple), var(--purple-light));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">✈</div>
+    PostPilot
+  </div>
+  <div class="header-right">
+    <span id="userEmail">Loading...</span>
+    <button class="btn-sm" onclick="manageBilling()">Manage Billing</button>
+    <button class="btn-sm danger" onclick="logout()">Log Out</button>
+  </div>
+</header>
+
+<div class="main-wrap">
+  <!-- Left: Form -->
+  <div class="panel">
+    <div class="panel-title"><span>⚡</span> Generate Posts</div>
+
+    <div class="form-group">
+      <label>Business Name</label>
+      <input type="text" id="bizName" placeholder="e.g. Mario's Pizza" />
+    </div>
+
+    <div class="form-group">
+      <label>Business Type</label>
+      <select id="bizType">
+        <option value="">— Select —</option>
+        <option>Restaurant / Café</option>
+        <option>Bakery</option>
+        <option>Hair Salon / Barbershop</option>
+        <option>Nail Salon / Spa</option>
+        <option>Gym / Fitness Studio</option>
+        <option>Real Estate Agent</option>
+        <option>Plumber / Electrician</option>
+        <option>Landscaping / Lawn Care</option>
+        <option>Auto Repair / Detailing</option>
+        <option>Dentist / Doctor</option>
+        <option>Retail Store / Boutique</option>
+        <option>Pet Grooming</option>
+        <option>Cleaning Service</option>
+        <option>Photography</option>
+        <option>Event Planning</option>
+        <option>Accounting / Tax</option>
+        <option>Legal Services</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>City / Location</label>
+      <input type="text" id="location" placeholder="e.g. Austin, TX" />
+    </div>
+
+    <div class="form-group">
+      <label>Tone / Vibe</label>
+      <select id="vibe">
+        <option value="friendly and professional">Friendly & Professional</option>
+        <option value="fun and casual">Fun & Casual</option>
+        <option value="luxury and premium">Luxury & Premium</option>
+        <option value="warm and community-focused">Warm & Community-Focused</option>
+        <option value="bold and energetic">Bold & Energetic</option>
+        <option value="informative and trustworthy">Informative & Trustworthy</option>
+        <option value="witty and humorous">Witty & Humorous</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Platform</label>
+      <div class="platform-group" id="platformGroup">
+        <div class="platform-pill active" data-val="instagram" onclick="selectPlatform(this)">📸 Instagram</div>
+        <div class="platform-pill" data-val="facebook" onclick="selectPlatform(this)">👥 Facebook</div>
+        <div class="platform-pill" data-val="twitter" onclick="selectPlatform(this)">🐦 Twitter/X</div>
+        <div class="platform-pill" data-val="linkedin" onclick="selectPlatform(this)">💼 LinkedIn</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Number of Posts</label>
+      <div class="count-group">
+        <div class="count-btn active" data-val="10" onclick="selectCount(this)">10 posts</div>
+        <div class="count-btn" data-val="15" onclick="selectCount(this)">15 posts</div>
+        <div class="count-btn" data-val="20" onclick="selectCount(this)">20 posts</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Extra Notes (optional)</label>
+      <textarea id="extra" placeholder="e.g. We have a summer sale running, mention free delivery, highlight our 5-star reviews..."></textarea>
+    </div>
+
+    <button class="btn-generate" id="generateBtn" onclick="generate()">
+      <span id="btnIcon">✨</span>
+      <span id="btnText">Generate Posts</span>
+    </button>
+
+    <div class="usage-bar-wrap" id="usageWrap" style="display:none">
+      <div class="usage-label">
+        <span>Posts generated this session</span>
+        <span id="usageCount">0</span>
+      </div>
+      <div class="usage-bar"><div class="usage-fill" id="usageFill"></div></div>
+    </div>
+  </div>
+
+  <!-- Right: Results -->
+  <div class="panel" id="resultsPanel">
+    <div id="emptyState" class="results-empty">
+      <div class="icon">✈️</div>
+      <p>Fill in your business details on the left<br>and hit <strong>Generate Posts</strong> to create<br>a full month of social content in seconds.</p>
+    </div>
+    <div id="loadingState" class="loading-state" style="display:none">
+      <div class="panel-title"><span>⏳</span> Writing your posts...</div>
+      <div class="skeleton-card">
+        <div class="skeleton-line" style="width:30%"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line" style="width:75%"></div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-line" style="width:30%"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line" style="width:85%"></div>
+      </div>
+      <div class="skeleton-card">
+        <div class="skeleton-line" style="width:30%"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line" style="width:60%"></div>
+      </div>
+    </div>
+    <div id="resultsState" style="display:none">
+      <div class="results-header">
+        <div class="panel-title" style="margin:0"><span>🎉</span> <span id="resultsTitle">Your Posts</span></div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div class="results-count" id="resultsCount">0 posts</div>
+          <button class="btn-copy-all" onclick="copyAll()">Copy All</button>
+        </div>
+      </div>
+      <div class="posts-grid" id="postsGrid"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">✓ <span id="toastMsg">Copied!</span></div>
+
+<script>
+  let selectedPlatform = 'instagram';
+  let selectedCount = 10;
+  let sessionPostCount = 0;
+
+  // Check auth on load
+  (async () => {
+    try {
+      const res = await fetch('/api/me');
+      if (!res.ok) { window.location.href = '/'; return; }
+      const data = await res.json();
+      document.getElementById('userEmail').textContent = data.email || '';
+    } catch(e) {
+      window.location.href = '/';
+    }
+  })();
+
+  function selectPlatform(el) {
+    document.querySelectorAll('.platform-pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    selectedPlatform = el.dataset.val;
+  }
+
+  function selectCount(el) {
+    document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    selectedCount = parseInt(el.dataset.val);
+  }
+
+  async function generate() {
+    const bizName = document.getElementById('bizName').value.trim();
+    const bizType = document.getElementById('bizType').value;
+    const location = document.getElementById('location').value.trim();
+    const vibe = document.getElementById('vibe').value;
+    const extra = document.getElementById('extra').value.trim();
+
+    if (!bizName) { showToast('Please enter your business name'); return; }
+    if (!bizType) { showToast('Please select a business type'); return; }
+    if (!location) { showToast('Please enter your location'); return; }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          businessName: bizName,
+          businessType: bizType,
+          location,
+          vibe,
+          platform: selectedPlatform,
+          count: selectedCount,
+          extra
+        })
+      });
+
+      if (res.status === 401) { window.location.href = '/'; return; }
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Generation failed');
+
+      renderPosts(data.posts, bizName);
+      sessionPostCount += data.posts.length;
+      updateUsageBar();
+      showToast(`${data.posts.length} posts generated! 🎉`);
+    } catch(e) {
+      showToast('Error: ' + e.message);
+      setLoading(false);
+      document.getElementById('emptyState').style.display = '';
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('resultsState').style.display = 'none';
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function setLoading(isLoading) {
+    const btn = document.getElementById('generateBtn');
+    const icon = document.getElementById('btnIcon');
+    const text = document.getElementById('btnText');
+    btn.disabled = isLoading;
+
+    if (isLoading) {
+      icon.innerHTML = '<div class="spinner"></div>';
+      text.textContent = 'Writing posts...';
+      document.getElementById('emptyState').style.display = 'none';
+      document.getElementById('loadingState').style.display = '';
+      document.getElementById('resultsState').style.display = 'none';
+    } else {
+      icon.textContent = '✨';
+      text.textContent = 'Generate Posts';
+    }
+  }
+
+  function renderPosts(posts, bizName) {
+    const grid = document.getElementById('postsGrid');
+    const platformLabel = selectedPlatform.charAt(0).toUpperCase() + selectedPlatform.slice(1);
+    grid.innerHTML = '';
+
+    posts.forEach((post, i) => {
+      const card = document.createElement('div');
+      card.className = 'post-card';
+      card.innerHTML = `
+        <div class="post-card-header">
+          <span class="post-num">Post ${i + 1}</span>
+          <span class="post-platform-badge">${platformLabel}</span>
+        </div>
+        <div class="post-text">${escapeHtml(post)}</div>
+        <div class="post-footer">
+          <button class="btn-copy" onclick="copyPost(this, ${JSON.stringify(post)})">Copy</button>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('resultsState').style.display = '';
+    document.getElementById('resultsTitle').textContent = `${bizName} — ${platformLabel} Posts`;
+    document.getElementById('resultsCount').textContent = `${posts.length} posts`;
+  }
+
+  function copyPost(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+  }
+
+  function copyAll() {
+    const posts = Array.from(document.querySelectorAll('.post-text')).map(el => el.textContent);
+    const all = posts.join('\n\n---\n\n');
+    navigator.clipboard.writeText(all).then(() => {
+      showToast(`All ${posts.length} posts copied!`);
+    });
+  }
+
+  function updateUsageBar() {
+    document.getElementById('usageWrap').style.display = '';
+    document.getElementById('usageCount').textContent = sessionPostCount;
+    const pct = Math.min((sessionPostCount / 60) * 100, 100);
+    document.getElementById('usageFill').style.width = pct + '%';
+  }
+
+  async function manageBilling() {
+    try {
+      const res = await fetch('/api/portal', { method: 'POST' });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+    } catch(e) {
+      showToast('Error opening billing portal');
+    }
+  }
+
+  async function logout() {
+    await fetch('/api/logout', { method: 'POST' });
+    window.location.href = '/';
+  }
+
+  let toastTimer;
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  function escapeHtml(text) {
+    return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+</script>
+</body>
+</html>
