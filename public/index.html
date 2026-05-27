@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PostPilot – AI Social Media Posts for Your Business</title>
+<meta name="description" content="Get 30 AI-written, ready-to-post social media captions every month for your business. No agency. No writer. Just results.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#08080F;--card:#0F0F1A;--border:#1E1E2E;
+    --purple:#7C3AED;--purple-light:#A78BFA;--purple-dark:#5B21B6;
+    --blue:#3B82F6;--green:#10B981;--text:#F1F5F9;--muted:#94A3B8;
+    --gradient:linear-gradient(135deg,#7C3AED,#3B82F6);
+  }
+  body{background:var(--bg);color:var(--text);font-family:Inter,sans-serif;line-height:1.6}
+  a{color:inherit;text-decoration:none}
+  
+  /* NAV */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:20px 5%;max-width:1200px;margin:0 auto}
+  .logo{font-size:1.4rem;font-weight:800;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .nav-links{display:flex;gap:12px;align-items:center}
+  .btn-ghost{padding:10px 20px;border:1px solid var(--border);border-radius:8px;font-size:.9rem;cursor:pointer;background:transparent;color:var(--muted);transition:all .2s}
+  .btn-ghost:hover{border-color:var(--purple-light);color:var(--text)}
+  .btn-primary{padding:11px 24px;background:var(--gradient);border:none;border-radius:8px;color:white;font-size:.9rem;font-weight:600;cursor:pointer;transition:opacity .2s}
+  .btn-primary:hover{opacity:.9}
+
+  /* HERO */
+  .hero{text-align:center;padding:80px 5% 60px;max-width:900px;margin:0 auto}
+  .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);color:var(--purple-light);padding:6px 16px;border-radius:100px;font-size:.85rem;font-weight:500;margin-bottom:28px}
+  .badge span{width:8px;height:8px;background:var(--green);border-radius:50%;display:inline-block;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+  h1{font-size:clamp(2.4rem,6vw,4rem);font-weight:900;line-height:1.1;margin-bottom:24px}
+  h1 .grad{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hero-sub{font-size:1.2rem;color:var(--muted);max-width:620px;margin:0 auto 40px}
+  .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
+  .btn-big{padding:16px 36px;font-size:1.05rem;font-weight:700;border-radius:10px;cursor:pointer;border:none;transition:all .2s}
+  .btn-big.primary{background:var(--gradient);color:white}
+  .btn-big.primary:hover{transform:translateY(-1px);box-shadow:0 8px 32px rgba(124,58,237,.4)}
+  .btn-big.ghost{background:transparent;border:1px solid var(--border);color:var(--muted)}
+  .btn-big.ghost:hover{border-color:var(--purple-light);color:var(--text)}
+  .hero-stats{display:flex;gap:40px;justify-content:center;flex-wrap:wrap}
+  .stat{text-align:center}
+  .stat-num{font-size:1.8rem;font-weight:800;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .stat-label{font-size:.85rem;color:var(--muted)}
+
+  /* SAMPLE POSTS */
+  .sample-section{padding:60px 5%;max-width:1100px;margin:0 auto}
+  .section-label{text-align:center;color:var(--muted);font-size:.9rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;margin-bottom:12px}
+  .section-title{text-align:center;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:48px}
+  .posts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+  .post-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;position:relative}
+  .post-platform{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:600;color:var(--purple-light);background:rgba(124,58,237,.1);padding:4px 12px;border-radius:100px;margin-bottom:14px}
+  .post-text{font-size:.95rem;line-height:1.7;color:var(--text)}
+  .post-tags{color:var(--blue);font-size:.85rem;margin-top:10px;opacity:.8}
+
+  /* HOW IT WORKS */
+  .how-section{padding:80px 5%;max-width:1000px;margin:0 auto}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:32px;margin-top:48px}
+  .step{text-align:center;padding:32px 24px;background:var(--card);border:1px solid var(--border);border-radius:16px}
+  .step-num{width:52px;height:52px;background:var(--gradient);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;margin:0 auto 20px}
+  .step h3{font-size:1.1rem;font-weight:700;margin-bottom:10px}
+  .step p{color:var(--muted);font-size:.95rem}
+
+  /* PRICING */
+  .pricing-section{padding:80px 5%;max-width:900px;margin:0 auto;text-align:center}
+  .pricing-card{background:var(--card);border:2px solid var(--purple);border-radius:24px;padding:48px;max-width:440px;margin:48px auto 0;position:relative;overflow:hidden}
+  .pricing-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--gradient)}
+  .popular-badge{background:var(--gradient);color:white;font-size:.8rem;font-weight:700;padding:4px 14px;border-radius:100px;display:inline-block;margin-bottom:24px}
+  .price-display{margin:24px 0}
+  .price-amount{font-size:4rem;font-weight:900;line-height:1}
+  .price-period{color:var(--muted);font-size:1rem}
+  .price-desc{color:var(--muted);margin-bottom:32px}
+  .feature-list{list-style:none;text-align:left;margin-bottom:36px}
+  .feature-list li{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);font-size:.95rem}
+  .feature-list li:last-child{border:none}
+  .check{color:var(--green);font-size:1.1rem;flex-shrink:0}
+  .pricing-note{color:var(--muted);font-size:.85rem;margin-top:20px}
+
+  /* FAQ */
+  .faq-section{padding:80px 5%;max-width:720px;margin:0 auto}
+  .faq-item{border-bottom:1px solid var(--border);padding:24px 0}
+  .faq-q{font-size:1rem;font-weight:600;margin-bottom:10px;cursor:pointer}
+  .faq-a{color:var(--muted);font-size:.95rem;line-height:1.7}
+
+  /* CTA SECTION */
+  .cta-section{padding:80px 5%;text-align:center;background:linear-gradient(135deg,rgba(124,58,237,.1),rgba(59,130,246,.1));border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:60px 0}
+  .cta-section h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;margin-bottom:16px}
+  .cta-section p{color:var(--muted);font-size:1.1rem;margin-bottom:36px}
+
+  /* FOOTER */
+  footer{padding:40px 5%;max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:gap;color:var(--muted);font-size:.85rem}
+
+  /* LOGIN MODAL */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(4px);z-index:100;align-items:center;justify-content:center}
+  .modal-overlay.open{display:flex}
+  .modal{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:40px;width:90%;max-width:420px}
+  .modal h2{font-size:1.5rem;font-weight:700;margin-bottom:8px}
+  .modal p{color:var(--muted);margin-bottom:28px;font-size:.95rem}
+  .form-group{margin-bottom:20px}
+  .form-group label{display:block;font-size:.85rem;font-weight:500;margin-bottom:8px;color:var(--muted)}
+  .form-group input{width:100%;padding:12px 16px;background:#1A1A2E;border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:.95rem;font-family:inherit;outline:none;transition:border-color .2s}
+  .form-group input:focus{border-color:var(--purple)}
+  .modal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;padding:4px 8px}
+  .error-msg{color:#F87171;font-size:.85rem;margin-top:8px;display:none}
+  .success-msg{color:var(--green);font-size:.85rem;margin-top:8px;display:none}
+
+  @media(max-width:600px){
+    nav .nav-links .btn-ghost{display:none}
+    .hero{padding:60px 5% 40px}
+    footer{flex-direction:column;gap:12px;text-align:center}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">PostPilot ✈</div>
+  <div class="nav-links">
+    <button class="btn-ghost" onclick="openLogin()">Sign In</button>
+    <button class="btn-primary" onclick="startCheckout()">Start Free Trial</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge"><span></span> Powered by GPT-4o · Used by 500+ businesses</div>
+  <h1>30 AI-Written Social Posts<br>For Your Business, <span class="grad">Every Month</span></h1>
+  <p class="hero-sub">Stop staring at a blank screen. PostPilot writes your Instagram, Facebook, LinkedIn, and Twitter posts in seconds — ready to copy and post.</p>
+  <div class="hero-cta">
+    <button class="btn-big primary" onclick="startCheckout()">Get My Posts — $29/month →</button>
+    <button class="btn-big ghost" onclick="scrollTo({top:document.getElementById('samples').offsetTop,behavior:'smooth'})">See Sample Posts</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">30</div><div class="stat-label">Posts per month</div></div>
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label">Platforms covered</div></div>
+    <div class="stat"><div class="stat-num">60s</div><div class="stat-label">To generate a month of content</div></div>
+    <div class="stat"><div class="stat-num">$0</div><div class="stat-label">Agency fees saved</div></div>
+  </div>
+</section>
+
+<!-- SAMPLE POSTS -->
+<section class="sample-section" id="samples">
+  <div class="section-label">Real output examples</div>
+  <h2 class="section-title">Your posts will look like this</h2>
+  <div class="posts-grid">
+    <div class="post-card">
+      <div class="post-platform">📸 Instagram</div>
+      <p class="post-text">Nothing beats a fresh cut on a Friday 💈✨ Walk-ins welcome all weekend at Mike&apos;s Barbershop! Whether you need a quick trim or a full style transformation, we&apos;ve got you. Come see us — we&apos;re right here in the heart of downtown.</p>
+      <p class="post-tags">#Barbershop #FreshCut #WalkInsWelcome #LocalBarber #MensGrooming #FridayVibes</p>
+    </div>
+    <div class="post-card">
+      <div class="post-platform">👔 LinkedIn</div>
+      <p class="post-text">3 years ago we started with just 2 tables and a dream. Today, Bella&apos;s Kitchen serves over 400 meals a week to our amazing community. 🍝 The secret? Listening to our customers and never cutting corners on quality. What&apos;s the best lesson your business has taught you?</p>
+      <p class="post-tags">#SmallBusiness #RestaurantLife #LocalEats #Entrepreneurship</p>
+    </div>
+    <div class="post-card">
+      <div class="post-platform">👥 Facebook</div>
+      <p class="post-text">🌸 SPRING SPECIAL — This week only! Book any full-color service at Luxe Salon and get a deep conditioning treatment FREE (valued at $45). Your hair has been through winter — time to give it some love. Tag a friend who needs this! Comment below or call us to book. 💜</p>
+      <p class="post-tags">#SalonLife #SpringSale #HairColor #LocalSalon #BookNow</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <div class="section-label">Simple process</div>
+  <h2 class="section-title" style="text-align:center">Three steps to a month of content</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Tell us about your business</h3>
+      <p>Enter your business name, type, location, and the vibe you want — playful, professional, bold.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Click Generate</h3>
+      <p>Our AI writes 10–30 platform-specific posts in under 60 seconds, tailored to your business.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Copy, post, done</h3>
+      <p>Hit copy on any post and paste it straight into Instagram, Facebook, LinkedIn, or Twitter.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="section-label">Pricing</div>
+  <h2 class="section-title">One plan. Everything included.</h2>
+  <div class="pricing-card">
+    <div class="popular-badge">Most Popular</div>
+    <div class="price-display">
+      <span class="price-amount">$29</span><span class="price-period">/month</span>
+    </div>
+    <p class="price-desc">Cancel anytime. No contracts. No agency markups.</p>
+    <ul class="feature-list">
+      <li><span class="check">✓</span> Unlimited post generations</li>
+      <li><span class="check">✓</span> Instagram, Facebook, LinkedIn &amp; Twitter</li>
+      <li><span class="check">✓</span> 10 or 20 posts per generation</li>
+      <li><span class="check">✓</span> Custom tone &amp; brand voice</li>
+      <li><span class="check">✓</span> Hashtag suggestions included</li>
+      <li><span class="check">✓</span> Powered by GPT-4o AI</li>
+      <li><span class="check">✓</span> New content every time you generate</li>
+    </ul>
+    <button class="btn-big primary" style="width:100%" onclick="startCheckout()">Start My Free Trial →</button>
+    <p class="pricing-note">🔒 Secure payment via Stripe. Cancel anytime in 1 click.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <h2 class="section-title" style="text-align:center">Questions &amp; Answers</h2>
+  <div class="faq-item">
+    <div class="faq-q">Do I need any tech skills?</div>
+    <div class="faq-a">Zero. You fill in a short form about your business and click Generate. That&apos;s it. Then copy your posts wherever you need them.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">How many posts can I generate?</div>
+    <div class="faq-a">Unlimited. Generate as many batches as you want — 10 or 20 posts at a time — as often as you need throughout the month.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Are the posts unique to my business?</div>
+    <div class="faq-a">Yes. Every post is generated fresh using your specific business name, type, location, and tone. No templates or recycled content.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Can I cancel anytime?</div>
+    <div class="faq-a">Absolutely. Cancel with one click from your account settings. No questions asked, no fees, no drama.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">What platforms does it support?</div>
+    <div class="faq-a">Instagram, Facebook, LinkedIn, and Twitter/X. Each platform gets posts written to match its specific style and character limits.</div>
+  </div>
+</section>
+
+<!-- CTA BOTTOM -->
+<section class="cta-section">
+  <h2>Stop Struggling With Social Media</h2>
+  <p>Join hundreds of local businesses posting consistently — without spending hours writing.</p>
+  <button class="btn-big primary" onclick="startCheckout()">Get Started for $29/month →</button>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">PostPilot ✈</div>
+  <div>© 2025 PostPilot. All rights reserved.</div>
+  <div><button class="btn-ghost" onclick="openLogin()" style="font-size:.85rem">Already subscribed? Sign In</button></div>
+</footer>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal" style="position:relative">
+    <button class="modal-close" onclick="closeLogin()">×</button>
+    <h2>Sign In</h2>
+    <p>Enter the email you used when you subscribed.</p>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="loginEmail" placeholder="you@example.com">
+    </div>
+    <div id="loginError" class="error-msg">No active subscription found with this email.</div>
+    <div id="loginSuccess" class="success-msg">Logging you in...</div>
+    <button class="btn-big primary" style="width:100%" onclick="submitLogin()" id="loginBtn">Sign In →</button>
+    <p style="text-align:center;margin-top:16px;color:var(--muted);font-size:.85rem">
+      Don&apos;t have an account? <a href="#pricing" onclick="closeLogin()" style="color:var(--purple-light)">Subscribe here</a>
+    </p>
+  </div>
+</div>
+
+<script>
+function openLogin() {
+  document.getElementById("loginModal").classList.add("open");
+  setTimeout(function(){ document.getElementById("loginEmail").focus(); }, 100);
+}
+function closeLogin() {
+  document.getElementById("loginModal").classList.remove("open");
+}
+document.getElementById("loginModal").addEventListener("click", function(e){
+  if(e.target === this) closeLogin();
+});
+
+async function startCheckout() {
+  const btn = event.target;
+  btn.textContent = "Loading...";
+  btn.disabled = true;
+  try {
+    const r = await fetch("/api/checkout", { method: "POST", headers: {"Content-Type":"application/json"} });
+    const data = await r.json();
+    if(data.url) window.location.href = data.url;
+    else { btn.textContent = "Error — try again"; btn.disabled = false; }
+  } catch(e) {
+    btn.textContent = "Error — try again";
+    btn.disabled = false;
+  }
+}
+
+async function submitLogin() {
+  const email = document.getElementById("loginEmail").value.trim();
+  const errEl = document.getElementById("loginError");
+  const okEl = document.getElementById("loginSuccess");
+  const btn = document.getElementById("loginBtn");
+  errEl.style.display = "none";
+  okEl.style.display = "none";
+  if(!email) { errEl.textContent = "Please enter your email."; errEl.style.display = "block"; return; }
+  btn.textContent = "Checking...";
+  btn.disabled = true;
+  try {
+    const r = await fetch("/api/login", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({ email })
+    });
+    const data = await r.json();
+    if(data.success) {
+      okEl.style.display = "block";
+      setTimeout(function(){ window.location.href = "/dashboard.html"; }, 800);
+    } else {
+      errEl.textContent = data.error || "Login failed.";
+      errEl.style.display = "block";
+      btn.textContent = "Sign In →";
+      btn.disabled = false;
+    }
+  } catch(e) {
+    errEl.textContent = "Network error. Please try again.";
+    errEl.style.display = "block";
+    btn.textContent = "Sign In →";
+    btn.disabled = false;
+  }
+}
+
+document.getElementById("loginEmail").addEventListener("keydown", function(e){
+  if(e.key === "Enter") submitLogin();
+});
+</script>
+</body>
+</html>
